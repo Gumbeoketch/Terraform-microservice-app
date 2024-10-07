@@ -9,7 +9,7 @@ fi
 
 # Run Checkov scan on the current directory
 echo "Running Checkov security scan on Terraform files..."
-checkov -d .
+checkov --directory .
 
 # Check if Checkov exited with non-zero (indicating failures)
 if [[ $? -ne 0 ]]; then
