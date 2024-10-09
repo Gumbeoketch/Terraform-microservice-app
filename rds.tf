@@ -1,26 +1,40 @@
-module "rds" {
-  source = "terraform-aws-modules/rds/aws"
-  version = "5.0.2"
+resource "aws_db_instance" "rds" {
+  allocated_storage    = 20
+  engine               = "postgres"
+  engine_version       = "13.4"
+  instance_class       = "db.t3.micro"
+  name                 = "appdb"
+  username             = "admin"
+  password             = "your_password"
+  vpc_security_group_ids = [aws_security_group.db_sg.id]
+  db_subnet_group_name = aws_db_subnet_group.default.name
 
-  identifier = "my-db-instance"
-  engine = "postgres"
-  engine_version = "14.3"
-  instance_class = "db.t3.micro"
-  allocated_storage = 20
-  storage_type = "gp2"
-  username = "admin"
-  password = "t@k3homE"
-  db_subnet_group_name = module.vpc.database_subnet_group
-
-  vpc_security_group_ids = [module.vpc.default_security_group]
   skip_final_snapshot = true
 }
 
-output "rds_endpoint" {
-  value = module.rds.this_db_instance_address
+resource "aws_db_subnet_group" "default" {
+  name       = "rds-subnet-group"
+  subnet_ids = module.vpc.private_subnets
 }
 
-output "rds_password" {
-  value = module.rds.this_db_instance_password
-  sensitive = true
+resource "aws_security_group" "db_sg" {
+  vpc_id = module.vpc.vpc_id
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.eks_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "db-sg"
+  }
 }
