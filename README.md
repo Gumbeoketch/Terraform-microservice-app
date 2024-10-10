@@ -1,43 +1,31 @@
 # take-home-PT1
-INSTALL AWS CLI
+##INSTALL AWS CLI
 https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
-AUTHENTICATE TO CLI USING IAM USER WITH TERRAFORM PERMISSION
-
+##AUTHENTICATE TO CLI USING IAM USER WITH TERRAFORM PERMISSION
 aws configure
 
-INSTALL TERRAFORM
-
+##INSTALL TERRAFORM
 https://developer.hashicorp.com/terraform/install
 
-APPLY TERRAFORM FILES
-
+##APPLY TERRAFORM FILES
 terraform init
-
 terraform validate
-
 terraform validate
-
 terraform plan
-
 terraform apply
 
-ACTIVATE ECR ON CONSOLE AND BUILD PUSH IMAGE
-
+##ACTIVATE ECR ON CONSOLE AND BUILD PUSH IMAGE
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.us-east-1.amazonaws.com
 docker build -t my-app .
 docker tag my-app:latest <aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
 docker push <aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
 
 
-DEPLOY THE APP
-
+##DEPLOY THE APP
 kubectl apply -f deployment.yaml
-
 kubectl apply -f service.yaml
 
-SECURITY SCANS
-
+##SECURITY SCANS
 ./checov_scan.sh
-
 trivy scan has been embedded in the Docker file. You can include exit code 1 for severity for example: RUN trivy filesystem --severity CRITICAL --exit-code 1 --no-progress /
