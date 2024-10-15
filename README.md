@@ -1,4 +1,3 @@
-# take-home-PT1
 ## INSTALL AWS CLI
 Follow the instructions to install AWS CLI:
 https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
